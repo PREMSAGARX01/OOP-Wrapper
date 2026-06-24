@@ -1,0 +1,401 @@
+# ==========================================
+# PR 5 - OOP Wrapper
+# Employee Management System
+# ==========================================
+
+# -----------------------------
+# Person Class
+# -----------------------------
+class Person:
+
+    def __init__(self, name="Unknown", age=0):
+        self.name = name
+        self.age = age
+
+    def display(self):
+        print(f"Name : {self.name}")
+        print(f"Age  : {self.age}")
+
+
+# -----------------------------
+# Employee Class
+# -----------------------------
+class Employee(Person):
+
+    # Method Overloading (Python Style)
+    def __init__(self,
+                 employee_id="NA",
+                 name="Unknown",
+                 age=0,
+                 salary=0):
+
+        super().__init__(name, age)
+
+        self.__employee_id = employee_id
+        self.__salary = salary
+
+    # Getters
+    def get_employee_id(self):
+        return self.__employee_id
+
+    def get_salary(self):
+        return self.__salary
+
+    # Setters
+    def set_employee_id(self, employee_id):
+        self.__employee_id = employee_id
+
+    def set_salary(self, salary):
+        self.__salary = salary
+
+    def display(self):
+        print("\nEmployee Details")
+        print("----------------")
+        print("Name :", self.name)
+        print("Age :", self.age)
+        print("Employee ID :", self.__employee_id)
+        print("Salary :", self.__salary)
+
+    # Destructor
+    def __del__(self):
+        pass
+
+
+# -----------------------------
+# Manager Class
+# -----------------------------
+class Manager(Employee):
+
+    def __init__(self,
+                 employee_id,
+                 name,
+                 age,
+                 salary,
+                 department):
+
+        super().__init__(
+            employee_id,
+            name,
+            age,
+            salary
+        )
+
+        self.department = department
+
+    # Method Overriding
+    def display(self):
+
+        print("\nManager Details")
+        print("----------------")
+        print("Name :", self.name)
+        print("Age :", self.age)
+        print("Employee ID :", self.get_employee_id())
+        print("Salary :", self.get_salary())
+        print("Department :", self.department)
+
+
+# -----------------------------
+# Developer Class
+# -----------------------------
+class Developer(Employee):
+
+    def __init__(self,
+                 employee_id,
+                 name,
+                 age,
+                 salary,
+                 programming_language):
+
+        super().__init__(
+            employee_id,
+            name,
+            age,
+            salary
+        )
+
+        self.programming_language = programming_language
+
+    # Method Overriding
+    def display(self):
+
+        print("\nDeveloper Details")
+        print("------------------")
+        print("Name :", self.name)
+        print("Age :", self.age)
+        print("Employee ID :", self.get_employee_id())
+        print("Salary :", self.get_salary())
+        print("Programming Language :",
+              self.programming_language)
+
+
+# -----------------------------
+# Storage Lists
+# -----------------------------
+employees = []
+managers = []
+developers = []
+
+
+# -----------------------------
+# Add Employee
+# -----------------------------
+def add_employee():
+
+    emp_id = input("Employee ID: ")
+    name = input("Name: ")
+    age = int(input("Age: "))
+    salary = float(input("Salary: "))
+
+    emp = Employee(
+        emp_id,
+        name,
+        age,
+        salary
+    )
+
+    employees.append(emp)
+
+    print("Employee Added Successfully!")
+
+
+# -----------------------------
+# Add Manager
+# -----------------------------
+def add_manager():
+
+    emp_id = input("Employee ID: ")
+    name = input("Name: ")
+    age = int(input("Age: "))
+    salary = float(input("Salary: "))
+    department = input("Department: ")
+
+    manager = Manager(
+        emp_id,
+        name,
+        age,
+        salary,
+        department
+    )
+
+    managers.append(manager)
+
+    print("Manager Added Successfully!")
+
+
+# -----------------------------
+# Add Developer
+# -----------------------------
+def add_developer():
+
+    emp_id = input("Employee ID: ")
+    name = input("Name: ")
+    age = int(input("Age: "))
+    salary = float(input("Salary: "))
+    language = input("Programming Language: ")
+
+    developer = Developer(
+        emp_id,
+        name,
+        age,
+        salary,
+        language
+    )
+
+    developers.append(developer)
+
+    print("Developer Added Successfully!")
+
+
+# -----------------------------
+# Display Functions
+# -----------------------------
+def display_employees():
+
+    if not employees:
+        print("No Employees Found.")
+        return
+
+    for emp in employees:
+        emp.display()
+
+
+def display_managers():
+
+    if not managers:
+        print("No Managers Found.")
+        return
+
+    for manager in managers:
+        manager.display()
+
+
+def display_developers():
+
+    if not developers:
+        print("No Developers Found.")
+        return
+
+    for developer in developers:
+        developer.display()
+
+
+# -----------------------------
+# Update Salary
+# -----------------------------
+def update_salary():
+
+    emp_id = input("Enter Employee ID: ")
+
+    found = False
+
+    all_staff = employees + managers + developers
+
+    for emp in all_staff:
+
+        if emp.get_employee_id() == emp_id:
+
+            new_salary = float(
+                input("Enter New Salary: ")
+            )
+
+            emp.set_salary(new_salary)
+
+            print("Salary Updated Successfully!")
+            found = True
+            break
+
+    if not found:
+        print("Employee Not Found.")
+
+
+# -----------------------------
+# Update Employee ID
+# -----------------------------
+def update_employee_id():
+
+    emp_id = input("Enter Current Employee ID: ")
+
+    found = False
+
+    all_staff = employees + managers + developers
+
+    for emp in all_staff:
+
+        if emp.get_employee_id() == emp_id:
+
+            new_id = input("Enter New Employee ID: ")
+
+            emp.set_employee_id(new_id)
+
+            print("Employee ID Updated!")
+            found = True
+            break
+
+    if not found:
+        print("Employee Not Found.")
+
+
+# -----------------------------
+# Remove Employee
+# -----------------------------
+def remove_employee():
+
+    emp_id = input("Enter Employee ID to Remove: ")
+
+    for collection in [employees,
+                       managers,
+                       developers]:
+
+        for emp in collection:
+
+            if emp.get_employee_id() == emp_id:
+
+                collection.remove(emp)
+
+                print("Employee Removed!")
+                return
+
+    print("Employee Not Found.")
+
+
+# -----------------------------
+# Check Inheritance
+# -----------------------------
+def check_inheritance():
+
+    print("\nInheritance Check")
+
+    print(
+        "Manager -> Employee :",
+        issubclass(
+            Manager,
+            Employee
+        )
+    )
+
+    print(
+        "Developer -> Employee :",
+        issubclass(
+            Developer,
+            Employee
+        )
+    )
+
+
+# -----------------------------
+# Main Menu
+# -----------------------------
+while True:
+
+    print("\n")
+    print("===== EMPLOYEE MANAGEMENT SYSTEM =====")
+    print("1. Add Employee")
+    print("2. Add Manager")
+    print("3. Add Developer")
+    print("4. Display Employees")
+    print("5. Display Managers")
+    print("6. Display Developers")
+    print("7. Update Salary")
+    print("8. Update Employee ID")
+    print("9. Remove Employee")
+    print("10. Check Inheritance")
+    print("11. Exit")
+
+    choice = input("Enter Choice: ")
+
+    if choice == "1":
+        add_employee()
+
+    elif choice == "2":
+        add_manager()
+
+    elif choice == "3":
+        add_developer()
+
+    elif choice == "4":
+        display_employees()
+
+    elif choice == "5":
+        display_managers()
+
+    elif choice == "6":
+        display_developers()
+
+    elif choice == "7":
+        update_salary()
+
+    elif choice == "8":
+        update_employee_id()
+
+    elif choice == "9":
+        remove_employee()
+
+    elif choice == "10":
+        check_inheritance()
+
+    elif choice == "11":
+        print("Exiting Program...")
+        break
+
+    else:
+        print("Invalid Choice!")
